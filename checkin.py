@@ -50,6 +50,15 @@ if __name__ == '__main__':
 
                 # 获取账号当前状态
                 result = state.json()
+                # AAAAAAAAA示例修改代码
+if 'data' in result:
+    leftdays = int(float(result['data'].get('leftDays', 0)))
+    print(f"剩余天数: {leftdays}")
+else:
+    print("签到未返回有效数据，可能已签到或接口异常")
+    # 可以选择直接跳过或打印完整返回结果调试
+    print(result) 
+                #AAAAAAAAAAAAAA
                 # 获取剩余时间
                 leftdays = int(float(result['data']['leftDays']))
                 # 获取账号email
@@ -95,6 +104,7 @@ if __name__ == '__main__':
     else:
         pushdeer = PushDeer(pushkey=sckey) 
         pushdeer.send_text(title, desp=context)
+
 
 
 

@@ -1,0 +1,46 @@
+
+name: auto check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - 'imgs/'
+  schedule:
+    - cron: '0 4,10 * * *'
+  watch:
+    types: started
+
+jobs:
+  build:
+    name: glados checkin
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: set up python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    # 安装 python 库
+    - name: install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+        pip install pypushdeer
+
+    # 执行 签到脚本
+    - name: running checkin
+      run: |
+        python AAA.py
+      env:
+        # env获取
+        SENDKEY: ${{ secrets.SENDKEY }}
+        COOKIES: ${{ secrets.COOKIES }}
